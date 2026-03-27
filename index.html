@@ -237,8 +237,8 @@
     <div class="field">
       <label>Pagamento para Terceiro</label>
       <div class="radio-group">
-        <label><input type="radio" name="terceiroSinal" value="SIM" id="s_tSIM" onchange="toggleTerceiro('s')"> <span>SIM</span></label>
-        <label><input type="radio" name="terceiroSinal" value="NÃO" id="s_tNAO" checked onchange="toggleTerceiro('s')"> <span>NÃO</span></label>
+        <label><input type="radio" name="terceiroSinal" value="É pagamento para terceiro" id="s_tSIM" onchange="toggleTerceiro('s')"> <span>SIM</span></label>
+        <label><input type="radio" name="terceiroSinal" value="Não possui nome de terceiros" id="s_tNAO" checked onchange="toggleTerceiro('s')"> <span>NÃO</span></label>
       </div>
     </div>
 
@@ -274,8 +274,8 @@
     <div class="field">
       <label>Pagamento para Terceiro</label>
       <div class="radio-group">
-        <label><input type="radio" name="terceiroSaldo" value="SIM" id="p_tSIM" onchange="toggleTerceiro('p')"> <span>SIM</span></label>
-        <label><input type="radio" name="terceiroSaldo" value="NÃO" id="p_tNAO" checked onchange="toggleTerceiro('p')"> <span>NÃO</span></label>
+        <label><input type="radio" name="terceiroSaldo" value="É pagamento para terceiro" id="p_tSIM" onchange="toggleTerceiro('p')"> <span>SIM</span></label>
+        <label><input type="radio" name="terceiroSaldo" value="Não possui nome de terceiros" id="p_tNAO" checked onchange="toggleTerceiro('p')"> <span>NÃO</span></label>
       </div>
     </div>
 
@@ -369,7 +369,7 @@ function coletarSinal() {
     tipo: 'sinal',
     pagamento_terceiro: terceiro,
     nome_cliente: document.getElementById('s_cliente').value,
-    nome_terceiro: terceiro === 'SIM' ? document.getElementById('s_terceiro').value : '',
+    nome_terceiro: terceiro === 'É pagamento para terceiro' ? document.getElementById('s_terceiro').value : '',
     pix: document.getElementById('s_pix').value,
     banco_cliente: document.getElementById('s_banco').value,
     captador: document.getElementById('s_captador').value,
@@ -390,7 +390,7 @@ function formatarSinal(d) {
     '📋 RELATÓRIO SINAL',
     '─────────────────────────────',
     `Pagamento p/ Terceiro: ${d.pagamento_terceiro}`,
-    d.pagamento_terceiro === 'SIM' ? `Nome do Terceiro: ${d.nome_terceiro}` : null,
+    d.pagamento_terceiro === 'É pagamento para terceiro' ? `Nome do Terceiro: ${d.nome_terceiro}` : null,
     `Nome do Cliente: ${d.nome_cliente}`,
     `Pix: ${d.pix}`,
     `Banco do Cliente: ${d.banco_cliente}`,
@@ -431,7 +431,7 @@ function coletarSaldo() {
     tipo: 'saldo',
     pagamento_terceiro: terceiro,
     nome_cliente: document.getElementById('p_cliente').value,
-    nome_terceiro: terceiro === 'SIM' ? document.getElementById('p_terceiro').value : '',
+    nome_terceiro: terceiro === 'É pagamento para terceiro' ? document.getElementById('p_terceiro').value : '',
     pix: document.getElementById('p_pix').value,
     banco_cliente: document.getElementById('p_banco').value,
     captador: document.getElementById('p_captador').value,
@@ -453,7 +453,7 @@ function formatarSaldo(d) {
     '📋 RELATÓRIO SALDO (PAGAMENTO TOTAL)',
     '─────────────────────────────',
     `Pagamento p/ Terceiro: ${d.pagamento_terceiro}`,
-    d.pagamento_terceiro === 'SIM' ? `Nome do Terceiro: ${d.nome_terceiro}` : null,
+    d.pagamento_terceiro === 'É pagamento para terceiro' ? `Nome do Terceiro: ${d.nome_terceiro}` : null,
     `Nome do Cliente: ${d.nome_cliente}`,
     `Pix: ${d.pix}`,
     `Banco do Cliente: ${d.banco_cliente}`,
