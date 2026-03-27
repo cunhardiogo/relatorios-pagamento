@@ -247,8 +247,10 @@
     <div class="field"><label>Pix</label><input type="text" id="s_pix" placeholder="Chave Pix"></div>
     <div class="field"><label>Banco do Cliente</label><input type="text" id="s_banco" placeholder="Ex: Nubank, Itaú..."></div>
     <div class="field"><label>Consultor</label><input type="text" id="s_captador" placeholder="Nome do captador"></div>
-    <div class="field"><label>Carro</label><input type="text" id="s_carro" placeholder="Marca / Modelo / Ano"></div>
+    <div class="field"><label>Carro</label><input type="text" id="s_carro" placeholder="Marca / Modelo"></div>
+    <div class="field"><label>Ano do Veículo</label><input type="text" id="s_ano" placeholder="Ex: 2022/2023"></div>
     <div class="field"><label>Placa</label><input type="text" id="s_placa" placeholder="AAA-0000" oninput="this.value=this.value.toUpperCase()"></div>
+    <div class="field"><label>Loja de Origem</label><input type="text" id="s_loja" placeholder="Nome da loja"></div>
     <div class="field"><label>Valor da Compra (R$)</label><input type="number" id="s_compra" placeholder="0,00" step="0.01"></div>
     <div class="field"><label>Débitos (R$)</label><input type="number" id="s_debitos" placeholder="0,00" step="0.01"></div>
     <div class="field"><label>Valor da Quitação (R$)</label><input type="number" id="s_quitacao" placeholder="0,00" step="0.01"></div>
@@ -282,8 +284,10 @@
     <div class="field"><label>Pix</label><input type="text" id="p_pix" placeholder="Chave Pix"></div>
     <div class="field"><label>Banco do Cliente</label><input type="text" id="p_banco" placeholder="Ex: Nubank, Itaú..."></div>
     <div class="field"><label>Consultor</label><input type="text" id="p_captador" placeholder="Nome do captador"></div>
-    <div class="field"><label>Carro</label><input type="text" id="p_carro" placeholder="Marca / Modelo / Ano"></div>
+    <div class="field"><label>Carro</label><input type="text" id="p_carro" placeholder="Marca / Modelo"></div>
+    <div class="field"><label>Ano do Veículo</label><input type="text" id="p_ano" placeholder="Ex: 2022/2023"></div>
     <div class="field"><label>Placa</label><input type="text" id="p_placa" placeholder="AAA-0000" oninput="this.value=this.value.toUpperCase()"></div>
+    <div class="field"><label>Loja de Origem</label><input type="text" id="p_loja" placeholder="Nome da loja"></div>
     <div class="field"><label>Valor da Compra (R$)</label><input type="number" id="p_compra" placeholder="0,00" step="0.01" oninput="calcSaldo()"></div>
     <div class="field"><label>Débitos (R$)</label><input type="number" id="p_debitos" placeholder="0,00" step="0.01" oninput="calcSaldo()"></div>
     <div class="field"><label>Valor da Quitação (R$)</label><input type="number" id="p_quitacao" placeholder="0,00" step="0.01" oninput="calcSaldo()"></div>
@@ -368,7 +372,9 @@ function coletarSinal() {
     banco_cliente: document.getElementById('s_banco').value,
     captador: document.getElementById('s_captador').value,
     carro: document.getElementById('s_carro').value,
+    ano: document.getElementById('s_ano').value,
     placa: document.getElementById('s_placa').value,
+    loja: document.getElementById('s_loja').value,
     valor_compra: parseFloat(document.getElementById('s_compra').value) || 0,
     debitos: parseFloat(document.getElementById('s_debitos').value) || 0,
     valor_quitacao: document.getElementById('s_quitacao').value,
@@ -387,7 +393,9 @@ function formatarSinal(d) {
     `Pix: ${d.pix}`,
     `Banco do Cliente: ${d.banco_cliente}`,
     `Consultor: ${d.captador}`,
+    `Loja de Origem: ${d.loja}`,
     `Carro: ${d.carro}`,
+    `Ano: ${d.ano}`,
     `Placa: ${d.placa}`,
     '─────────────────────────────',
     `Valor da Compra: ${BRL(d.valor_compra)}`,
@@ -426,7 +434,9 @@ function coletarSaldo() {
     banco_cliente: document.getElementById('p_banco').value,
     captador: document.getElementById('p_captador').value,
     carro: document.getElementById('p_carro').value,
+    ano: document.getElementById('p_ano').value,
     placa: document.getElementById('p_placa').value,
+    loja: document.getElementById('p_loja').value,
     valor_compra: parseFloat(document.getElementById('p_compra').value) || 0,
     debitos: parseFloat(document.getElementById('p_debitos').value) || 0,
     valor_quitacao: document.getElementById('p_quitacao').value,
@@ -446,7 +456,9 @@ function formatarSaldo(d) {
     `Pix: ${d.pix}`,
     `Banco do Cliente: ${d.banco_cliente}`,
     `Consultor: ${d.captador}`,
+    `Loja de Origem: ${d.loja}`,
     `Carro: ${d.carro}`,
+    `Ano: ${d.ano}`,
     `Placa: ${d.placa}`,
     '─────────────────────────────',
     `Valor da Compra: ${BRL(d.valor_compra)}`,
