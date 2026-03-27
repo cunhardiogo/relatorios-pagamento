@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relatórios de Pagamento</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #e2e2e2;
+    --surface2: #d0d0d0;
+    --border: #b0b0b0;
+    --accent: #3b82f6;
+    --accent-hover: #2563eb;
+    --green: #22c55e;
+    --green-hover: #16a34a;
+    --text: #0f172a;
+    --muted: #64748b;
+    --danger: #ef4444;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    min-height: 100vh;
+    padding: 24px 16px;
+  }
+  header {
+    max-width: 1100px;
+    margin: 0 auto 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  header h1 { font-size: 1.4rem; font-weight: 700; }
+  header span { color: var(--muted); font-size: 0.85rem; }
+
+
+  .grid {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+  }
+  .card-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .badge {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fff;
+  }
+  .badge.green { background: var(--green); }
+
+  .field { margin-bottom: 14px; }
+  label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  input[type="text"],
+  input[type="number"],
+  input[type="url"],
+  textarea {
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 9px 12px;
+    color: var(--text);
+    font-size: 0.92rem;
+    font-family: inherit;
+    transition: border-color 0.15s;
+  }
+  input:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  input.calc-field {
+    border-color: var(--border);
+    background: #ffffff;
+    font-weight: 700;
+    color: #16a34a;
+  }
+  textarea { resize: vertical; min-height: 60px; }
+
+  .radio-group {
+    display: flex;
+    gap: 12px;
+  }
+  .radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 0.92rem;
+    color: var(--text);
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 7px 14px;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .radio-group input[type="radio"] { display: none; }
+  .radio-group input[type="radio"]:checked + span {
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .radio-group label:has(input:checked) {
+    border-color: var(--accent);
+    background: #1e3a5f;
+  }
+
+  .actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  button {
+    flex: 1;
+    padding: 11px 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    font-family: inherit;
+  }
+  button:active { transform: scale(0.97); }
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+  }
+  .btn-primary:hover { background: var(--accent-hover); }
+  .btn-copy {
+    background: var(--surface2);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn-copy:hover { background: var(--border); }
+  .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .preview {
+    margin-top: 16px;
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    white-space: pre-wrap;
+    color: #1e40af;
+    min-height: 60px;
+    display: none;
+  }
+  .preview.visible { display: block; }
+
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--green);
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.25s;
+    pointer-events: none;
+    z-index: 9999;
+  }
+  .toast.error { background: var(--danger); }
+  .toast.show { opacity: 1; transform: translateY(0); }
+
+  .status-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--muted);
+    display: inline-block;
+    margin-right: 4px;
+  }
+  .status-dot.ok { background: var(--green); }
+  .status-dot.err { background: var(--danger); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Relatórios de Pagamento</h1>
+</header>
+
+
+<div class="grid">
+
+  <!-- ===== CARD SINAL ===== -->
+  <div class="card">
+    <div class="card-title">
+      Relatório Sinal
+      <span class="status-dot" id="dotSinal"></span>
+    </div>
+
+    <div class="field">
+      <label>Pagamento para Terceiro</label>
+      <div class="radio-group">
+        <label><input type="radio" name="terceiroSinal" value="SIM" id="s_tSIM" onchange="toggleTerceiro('s')"> <span>SIM</span></label>
+        <label><input type="radio" name="terceiroSinal" value="NÃO" id="s_tNAO" checked onchange="toggleTerceiro('s')"> <span>NÃO</span></label>
+      </div>
+    </div>
+
+    <div class="field"><label>Nome do Cliente</label><input type="text" id="s_cliente" placeholder="Nome completo"></div>
+    <div class="field" id="s_terceiro_field" style="display:none"><label>Nome do Terceiro</label><input type="text" id="s_terceiro" placeholder="Nome do terceiro"></div>
+    <div class="field"><label>Pix</label><input type="text" id="s_pix" placeholder="Chave Pix"></div>
+    <div class="field"><label>Banco do Cliente</label><input type="text" id="s_banco" placeholder="Ex: Nubank, Itaú..."></div>
+    <div class="field"><label>Consultor</label><input type="text" id="s_captador" placeholder="Nome do captador"></div>
+    <div class="field"><label>Carro</label><input type="text" id="s_carro" placeholder="Marca / Modelo / Ano"></div>
+    <div class="field"><label>Placa</label><input type="text" id="s_placa" placeholder="AAA-0000" oninput="this.value=this.value.toUpperCase()"></div>
+    <div class="field"><label>Valor da Compra (R$)</label><input type="number" id="s_compra" placeholder="0,00" step="0.01"></div>
+    <div class="field"><label>Débitos (R$)</label><input type="number" id="s_debitos" placeholder="0,00" step="0.01"></div>
+    <div class="field"><label>Valor da Quitação (R$)</label><input type="number" id="s_quitacao" placeholder="0,00" step="0.01"></div>
+    <div class="field"><label>Laudo</label><input type="text" id="s_laudo" placeholder="Status / observações do laudo"></div>
+    <div class="field"><label>Valor do Sinal (R$)</label><input type="number" id="s_sinal" placeholder="0,00" step="0.01"></div>
+
+    <div class="actions">
+      <button class="btn-primary" onclick="gerarSinal()">Gerar Relatório Sinal</button>
+      <button class="btn-copy" onclick="copiarSinal()">Copiar Relatório</button>
+    </div>
+    <div class="preview" id="previewSinal"></div>
+  </div>
+
+  <!-- ===== CARD SALDO ===== -->
+  <div class="card">
+    <div class="card-title">
+      Relatório Pagamento Total
+      <span class="status-dot" id="dotSaldo"></span>
+    </div>
+
+    <div class="field">
+      <label>Pagamento para Terceiro</label>
+      <div class="radio-group">
+        <label><input type="radio" name="terceiroSaldo" value="SIM" id="p_tSIM" onchange="toggleTerceiro('p')"> <span>SIM</span></label>
+        <label><input type="radio" name="terceiroSaldo" value="NÃO" id="p_tNAO" checked onchange="toggleTerceiro('p')"> <span>NÃO</span></label>
+      </div>
+    </div>
+
+    <div class="field"><label>Nome do Cliente</label><input type="text" id="p_cliente" placeholder="Nome completo"></div>
+    <div class="field" id="p_terceiro_field" style="display:none"><label>Nome do Terceiro</label><input type="text" id="p_terceiro" placeholder="Nome do terceiro"></div>
+    <div class="field"><label>Pix</label><input type="text" id="p_pix" placeholder="Chave Pix"></div>
+    <div class="field"><label>Banco do Cliente</label><input type="text" id="p_banco" placeholder="Ex: Nubank, Itaú..."></div>
+    <div class="field"><label>Consultor</label><input type="text" id="p_captador" placeholder="Nome do captador"></div>
+    <div class="field"><label>Carro</label><input type="text" id="p_carro" placeholder="Marca / Modelo / Ano"></div>
+    <div class="field"><label>Placa</label><input type="text" id="p_placa" placeholder="AAA-0000" oninput="this.value=this.value.toUpperCase()"></div>
+    <div class="field"><label>Valor da Compra (R$)</label><input type="number" id="p_compra" placeholder="0,00" step="0.01" oninput="calcSaldo()"></div>
+    <div class="field"><label>Débitos (R$)</label><input type="number" id="p_debitos" placeholder="0,00" step="0.01" oninput="calcSaldo()"></div>
+    <div class="field"><label>Valor da Quitação (R$)</label><input type="number" id="p_quitacao" placeholder="0,00" step="0.01" oninput="calcSaldo()"></div>
+    <div class="field"><label>Sinal Pago (R$)</label><input type="number" id="p_sinalpago" placeholder="0,00" step="0.01" oninput="calcSaldo()"></div>
+    <div class="field"><label>Laudo</label><input type="text" id="p_laudo" placeholder="Status / observações do laudo"></div>
+    <div class="field"><label>Pagamento Total (R$) — calculado</label><input type="text" id="p_total" class="calc-field" readonly></div>
+
+    <div class="actions">
+      <button class="btn-primary" onclick="gerarSaldo()">Gerar Relatório Saldo</button>
+      <button class="btn-copy" onclick="copiarSaldo()">Copiar Relatório</button>
+    </div>
+    <div class="preview" id="previewSaldo"></div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const BRL = v => 'R$ ' + Number(v || 0).toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2});
+
+function toggleTerceiro(prefix) {
+  const sim = document.getElementById(prefix + '_tSIM').checked;
+  document.getElementById(prefix + '_terceiro_field').style.display = sim ? 'block' : 'none';
+}
+
+// ── Webhooks ──────────────────────────────────────────────
+const WEBHOOK_SINAL = 'https://webhook.agenteintel.com.br/webhook/relatoriopagamento';
+const WEBHOOK_SALDO = 'https://webhook.agenteintel.com.br/webhook/relatoriopagamento';
+
+// ── Calcs ─────────────────────────────────────────────────
+function calcSaldo() {
+  const quitacao = parseFloat(document.getElementById('p_quitacao').value) || 0;
+  const sinal = parseFloat(document.getElementById('p_sinalpago').value) || 0;
+  document.getElementById('p_total').value = BRL(quitacao - sinal);
+}
+
+// ── Toast ─────────────────────────────────────────────────
+function showToast(msg, error = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (error ? ' error' : '') + ' show';
+  setTimeout(() => t.className = 'toast' + (error ? ' error' : ''), 2500);
+}
+
+// ── Webhook ───────────────────────────────────────────────
+async function dispararWebhook(url, payload, dotId) {
+  const dot = document.getElementById(dotId);
+  if (!url) { showToast('Configure a URL do webhook primeiro.', true); return false; }
+  try {
+    dot.className = 'status-dot';
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload)
+    });
+    if (res.ok) {
+      dot.className = 'status-dot ok';
+      showToast('Webhook disparado com sucesso!');
+      return true;
+    } else {
+      dot.className = 'status-dot err';
+      showToast('Erro no webhook: ' + res.status, true);
+      return false;
+    }
+  } catch(e) {
+    dot.className = 'status-dot err';
+    showToast('Falha ao conectar: ' + e.message, true);
+    return false;
+  }
+}
+
+// ── Relatório Sinal ───────────────────────────────────────
+function coletarSinal() {
+  const terceiro = document.querySelector('input[name="terceiroSinal"]:checked').value;
+  return {
+    tipo: 'sinal',
+    pagamento_terceiro: terceiro,
+    nome_cliente: document.getElementById('s_cliente').value,
+    nome_terceiro: terceiro === 'SIM' ? document.getElementById('s_terceiro').value : '',
+    pix: document.getElementById('s_pix').value,
+    banco_cliente: document.getElementById('s_banco').value,
+    captador: document.getElementById('s_captador').value,
+    carro: document.getElementById('s_carro').value,
+    placa: document.getElementById('s_placa').value,
+    valor_compra: parseFloat(document.getElementById('s_compra').value) || 0,
+    debitos: parseFloat(document.getElementById('s_debitos').value) || 0,
+    valor_quitacao: document.getElementById('s_quitacao').value,
+    laudo: document.getElementById('s_laudo').value,
+    valor_sinal: parseFloat(document.getElementById('s_sinal').value) || 0,
+    gerado_em: new Date().toLocaleString('pt-BR')
+  };
+}
+function formatarSinal(d) {
+  return [
+    '📋 RELATÓRIO SINAL',
+    '─────────────────────────────',
+    `Pagamento p/ Terceiro: ${d.pagamento_terceiro}`,
+    d.pagamento_terceiro === 'SIM' ? `Nome do Terceiro: ${d.nome_terceiro}` : null,
+    `Nome do Cliente: ${d.nome_cliente}`,
+    `Pix: ${d.pix}`,
+    `Banco do Cliente: ${d.banco_cliente}`,
+    `Consultor: ${d.captador}`,
+    `Carro: ${d.carro}`,
+    `Placa: ${d.placa}`,
+    '─────────────────────────────',
+    `Valor da Compra: ${BRL(d.valor_compra)}`,
+    `Débitos: ${BRL(d.debitos)}`,
+    `Valor da Quitação: ${d.valor_quitacao}`,
+    `Laudo: ${d.laudo}`,
+    '─────────────────────────────',
+    `Valor do Sinal: ${BRL(d.valor_sinal)}`,
+    '─────────────────────────────',
+    `Gerado em: ${d.gerado_em}`
+  ].filter(l => l !== null).join('\n');
+}
+async function gerarSinal() {
+  const d = coletarSinal();
+  const texto = formatarSinal(d);
+  const preview = document.getElementById('previewSinal');
+  preview.textContent = texto;
+  preview.classList.add('visible');
+  await dispararWebhook(WEBHOOK_SINAL, d, 'dotSinal');
+}
+function copiarSinal() {
+  const texto = document.getElementById('previewSinal').textContent;
+  if (!texto) { showToast('Gere o relatório primeiro.', true); return; }
+  navigator.clipboard.writeText(texto).then(() => showToast('Relatório copiado!'));
+}
+
+// ── Relatório Saldo ───────────────────────────────────────
+function coletarSaldo() {
+  const terceiro = document.querySelector('input[name="terceiroSaldo"]:checked').value;
+  return {
+    tipo: 'saldo',
+    pagamento_terceiro: terceiro,
+    nome_cliente: document.getElementById('p_cliente').value,
+    nome_terceiro: terceiro === 'SIM' ? document.getElementById('p_terceiro').value : '',
+    pix: document.getElementById('p_pix').value,
+    banco_cliente: document.getElementById('p_banco').value,
+    captador: document.getElementById('p_captador').value,
+    carro: document.getElementById('p_carro').value,
+    placa: document.getElementById('p_placa').value,
+    valor_compra: parseFloat(document.getElementById('p_compra').value) || 0,
+    debitos: parseFloat(document.getElementById('p_debitos').value) || 0,
+    valor_quitacao: document.getElementById('p_quitacao').value,
+    sinal_pago: parseFloat(document.getElementById('p_sinalpago').value) || 0,
+    laudo: document.getElementById('p_laudo').value,
+    pagamento_total: document.getElementById('p_total').value,
+    gerado_em: new Date().toLocaleString('pt-BR')
+  };
+}
+function formatarSaldo(d) {
+  return [
+    '📋 RELATÓRIO SALDO (PAGAMENTO TOTAL)',
+    '─────────────────────────────',
+    `Pagamento p/ Terceiro: ${d.pagamento_terceiro}`,
+    d.pagamento_terceiro === 'SIM' ? `Nome do Terceiro: ${d.nome_terceiro}` : null,
+    `Nome do Cliente: ${d.nome_cliente}`,
+    `Pix: ${d.pix}`,
+    `Banco do Cliente: ${d.banco_cliente}`,
+    `Consultor: ${d.captador}`,
+    `Carro: ${d.carro}`,
+    `Placa: ${d.placa}`,
+    '─────────────────────────────',
+    `Valor da Compra: ${BRL(d.valor_compra)}`,
+    `Débitos: ${BRL(d.debitos)}`,
+    `Valor da Quitação: ${d.valor_quitacao}`,
+    `Sinal Pago: ${BRL(d.sinal_pago)}`,
+    `Laudo: ${d.laudo}`,
+    '─────────────────────────────',
+    `Pagamento Total: ${d.pagamento_total}`,
+    '─────────────────────────────',
+    `Gerado em: ${d.gerado_em}`
+  ].filter(l => l !== null).join('\n');
+}
+async function gerarSaldo() {
+  const d = coletarSaldo();
+  const texto = formatarSaldo(d);
+  const preview = document.getElementById('previewSaldo');
+  preview.textContent = texto;
+  preview.classList.add('visible');
+  await dispararWebhook(WEBHOOK_SALDO, d, 'dotSaldo');
+}
+function copiarSaldo() {
+  const texto = document.getElementById('previewSaldo').textContent;
+  if (!texto) { showToast('Gere o relatório primeiro.', true); return; }
+  navigator.clipboard.writeText(texto).then(() => showToast('Relatório copiado!'));
+}
+</script>
+</body>
+</html>
