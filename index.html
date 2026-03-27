@@ -320,9 +320,11 @@ const WEBHOOK_SALDO = 'https://webhook.agenteintel.com.br/webhook/relatoriopagam
 
 // ── Calcs ─────────────────────────────────────────────────
 function calcSaldo() {
+  const compra = parseFloat(document.getElementById('p_compra').value) || 0;
+  const debitos = parseFloat(document.getElementById('p_debitos').value) || 0;
   const quitacao = parseFloat(document.getElementById('p_quitacao').value) || 0;
   const sinal = parseFloat(document.getElementById('p_sinalpago').value) || 0;
-  document.getElementById('p_total').value = BRL(quitacao - sinal);
+  document.getElementById('p_total').value = BRL(compra - debitos - quitacao - sinal);
 }
 
 // ── Toast ─────────────────────────────────────────────────
