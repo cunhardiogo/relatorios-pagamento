@@ -136,7 +136,7 @@
   }
   .radio-group label:has(input:checked) {
     border-color: var(--accent);
-    background: #1e3a5f;
+    background: #dbeafe;
   }
 
   .actions {
@@ -379,7 +379,7 @@ function coletarSinal() {
     loja: document.getElementById('s_loja').value,
     valor_compra: parseFloat(document.getElementById('s_compra').value) || 0,
     debitos: parseFloat(document.getElementById('s_debitos').value) || 0,
-    valor_quitacao: document.getElementById('s_quitacao').value,
+    valor_quitacao: parseFloat(document.getElementById('s_quitacao').value) || 0,
     laudo: document.getElementById('s_laudo').value,
     valor_sinal: parseFloat(document.getElementById('s_sinal').value) || 0,
     gerado_em: new Date().toLocaleString('pt-BR')
@@ -421,7 +421,7 @@ async function gerarSinal() {
 function copiarSinal() {
   const texto = document.getElementById('previewSinal').textContent;
   if (!texto) { showToast('Gere o relatório primeiro.', true); return; }
-  navigator.clipboard.writeText(texto).then(() => showToast('Relatório copiado!'));
+  navigator.clipboard.writeText(texto).then(() => showToast('Relatório copiado!')).catch(() => showToast('Erro ao copiar. Use Ctrl+A no texto.', true));
 }
 
 // ── Relatório Saldo ───────────────────────────────────────
@@ -441,10 +441,10 @@ function coletarSaldo() {
     loja: document.getElementById('p_loja').value,
     valor_compra: parseFloat(document.getElementById('p_compra').value) || 0,
     debitos: parseFloat(document.getElementById('p_debitos').value) || 0,
-    valor_quitacao: document.getElementById('p_quitacao').value,
+    valor_quitacao: parseFloat(document.getElementById('p_quitacao').value) || 0,
     sinal_pago: parseFloat(document.getElementById('p_sinalpago').value) || 0,
     laudo: document.getElementById('p_laudo').value,
-    pagamento_total: document.getElementById('p_total').value,
+    pagamento_total: parseFloat(document.getElementById('p_compra').value || 0) - parseFloat(document.getElementById('p_debitos').value || 0) - parseFloat(document.getElementById('p_quitacao').value || 0) - parseFloat(document.getElementById('p_sinalpago').value || 0),
     gerado_em: new Date().toLocaleString('pt-BR')
   };
 }
@@ -485,7 +485,7 @@ async function gerarSaldo() {
 function copiarSaldo() {
   const texto = document.getElementById('previewSaldo').textContent;
   if (!texto) { showToast('Gere o relatório primeiro.', true); return; }
-  navigator.clipboard.writeText(texto).then(() => showToast('Relatório copiado!'));
+  navigator.clipboard.writeText(texto).then(() => showToast('Relatório copiado!')).catch(() => showToast('Erro ao copiar. Use Ctrl+A no texto.', true));
 }
 </script>
 </body>
