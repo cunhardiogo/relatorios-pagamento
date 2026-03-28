@@ -87,6 +87,7 @@
   input[type="text"],
   input[type="number"],
   input[type="url"],
+  select,
   textarea {
     width: 100%;
     background: #ffffff;
@@ -98,7 +99,7 @@
     font-family: inherit;
     transition: border-color 0.15s;
   }
-  input:focus, textarea:focus {
+  input:focus, select:focus, textarea:focus {
     outline: none;
     border-color: var(--accent);
   }
@@ -246,7 +247,7 @@
     <div class="field" id="s_terceiro_field" style="display:none"><label>Nome do Terceiro</label><input type="text" id="s_terceiro" placeholder="Nome do terceiro"></div>
     <div class="field"><label>Pix</label><input type="text" id="s_pix" placeholder="Chave Pix"></div>
     <div class="field"><label>Banco do Cliente</label><input type="text" id="s_banco" placeholder="Ex: Nubank, Itaú..."></div>
-    <div class="field"><label>Loja de Origem</label><input type="text" id="s_loja" placeholder="Nome da loja"></div>
+    <div class="field"><label>Loja de Origem</label><select id="s_loja"><option value="">Selecione a loja</option><option>Suzano</option><option>Butantã</option><option>Embu</option><option>Guarulhos</option><option>Caieiras</option></select></div>
     <div class="field"><label>Consultor</label><input type="text" id="s_captador" placeholder="Nome do captador"></div>
     <div class="field"><label>Carro</label><input type="text" id="s_carro" placeholder="Marca / Modelo"></div>
     <div class="field"><label>Ano do Veículo</label><input type="text" id="s_ano" placeholder="Ex: 2022/2023"></div>
@@ -283,7 +284,7 @@
     <div class="field" id="p_terceiro_field" style="display:none"><label>Nome do Terceiro</label><input type="text" id="p_terceiro" placeholder="Nome do terceiro"></div>
     <div class="field"><label>Pix</label><input type="text" id="p_pix" placeholder="Chave Pix"></div>
     <div class="field"><label>Banco do Cliente</label><input type="text" id="p_banco" placeholder="Ex: Nubank, Itaú..."></div>
-    <div class="field"><label>Loja de Origem</label><input type="text" id="p_loja" placeholder="Nome da loja"></div>
+    <div class="field"><label>Loja de Origem</label><select id="p_loja"><option value="">Selecione a loja</option><option>Suzano</option><option>Butantã</option><option>Embu</option><option>Guarulhos</option><option>Caieiras</option></select></div>
     <div class="field"><label>Consultor</label><input type="text" id="p_captador" placeholder="Nome do captador"></div>
     <div class="field"><label>Carro</label><input type="text" id="p_carro" placeholder="Marca / Modelo"></div>
     <div class="field"><label>Ano do Veículo</label><input type="text" id="p_ano" placeholder="Ex: 2022/2023"></div>
