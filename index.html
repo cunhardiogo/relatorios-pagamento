@@ -378,11 +378,11 @@ function coletarSinal() {
     ano: document.getElementById('s_ano').value,
     placa: document.getElementById('s_placa').value,
     loja: document.getElementById('s_loja').value,
-    valor_compra: parseFloat(document.getElementById('s_compra').value) || 0,
-    debitos: parseFloat(document.getElementById('s_debitos').value) || 0,
-    valor_quitacao: parseFloat(document.getElementById('s_quitacao').value) || 0,
+    valor_compra: BRL(parseFloat(document.getElementById('s_compra').value) || 0),
+    debitos: BRL(parseFloat(document.getElementById('s_debitos').value) || 0),
+    valor_quitacao: BRL(parseFloat(document.getElementById('s_quitacao').value) || 0),
     laudo: document.getElementById('s_laudo').value,
-    valor_sinal: parseFloat(document.getElementById('s_sinal').value) || 0,
+    valor_sinal: BRL(parseFloat(document.getElementById('s_sinal').value) || 0),
     gerado_em: new Date().toLocaleString('pt-BR')
   };
 }
@@ -401,12 +401,12 @@ function formatarSinal(d) {
     `Ano: ${d.ano}`,
     `Placa: ${d.placa}`,
     '─────────────────────────────',
-    `Valor da Compra: ${BRL(d.valor_compra)}`,
-    `Débitos: ${BRL(d.debitos)}`,
+    `Valor da Compra: ${d.valor_compra}`,
+    `Débitos: ${d.debitos}`,
     `Valor da Quitação: ${d.valor_quitacao}`,
     `Laudo: ${d.laudo}`,
     '─────────────────────────────',
-    `Valor do Sinal: ${BRL(d.valor_sinal)}`,
+    `Valor do Sinal: ${d.valor_sinal}`,
     '─────────────────────────────',
     `Gerado em: ${d.gerado_em}`
   ].filter(l => l !== null).join('\n');
@@ -440,12 +440,12 @@ function coletarSaldo() {
     ano: document.getElementById('p_ano').value,
     placa: document.getElementById('p_placa').value,
     loja: document.getElementById('p_loja').value,
-    valor_compra: parseFloat(document.getElementById('p_compra').value) || 0,
-    debitos: parseFloat(document.getElementById('p_debitos').value) || 0,
-    valor_quitacao: parseFloat(document.getElementById('p_quitacao').value) || 0,
-    sinal_pago: parseFloat(document.getElementById('p_sinalpago').value) || 0,
+    valor_compra: BRL(parseFloat(document.getElementById('p_compra').value) || 0),
+    debitos: BRL(parseFloat(document.getElementById('p_debitos').value) || 0),
+    valor_quitacao: BRL(parseFloat(document.getElementById('p_quitacao').value) || 0),
+    sinal_pago: BRL(parseFloat(document.getElementById('p_sinalpago').value) || 0),
     laudo: document.getElementById('p_laudo').value,
-    pagamento_total: parseFloat(document.getElementById('p_compra').value || 0) - parseFloat(document.getElementById('p_debitos').value || 0) - parseFloat(document.getElementById('p_quitacao').value || 0) - parseFloat(document.getElementById('p_sinalpago').value || 0),
+    pagamento_total: BRL((parseFloat(document.getElementById('p_compra').value) || 0) - (parseFloat(document.getElementById('p_debitos').value) || 0) - (parseFloat(document.getElementById('p_quitacao').value) || 0) - (parseFloat(document.getElementById('p_sinalpago').value) || 0)),
     gerado_em: new Date().toLocaleString('pt-BR')
   };
 }
@@ -464,10 +464,10 @@ function formatarSaldo(d) {
     `Ano: ${d.ano}`,
     `Placa: ${d.placa}`,
     '─────────────────────────────',
-    `Valor da Compra: ${BRL(d.valor_compra)}`,
-    `Débitos: ${BRL(d.debitos)}`,
+    `Valor da Compra: ${d.valor_compra}`,
+    `Débitos: ${d.debitos}`,
     `Valor da Quitação: ${d.valor_quitacao}`,
-    `Sinal Pago: ${BRL(d.sinal_pago)}`,
+    `Sinal Pago: ${d.sinal_pago}`,
     `Laudo: ${d.laudo}`,
     '─────────────────────────────',
     `Pagamento Total: ${d.pagamento_total}`,
